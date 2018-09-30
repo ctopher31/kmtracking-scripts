@@ -14,12 +14,10 @@ browserSync.create();
 
 const {
   bundleJs,
-  bootstrapJs,
 } = config.paths.js;
 
 const {
   bundleSass,
-  bootstrapSass,
 } = config.paths.sass;
 
 gulp.task('build', ['buildNunjucks', 'buildBundleJs', 'buildBundleSass']);
@@ -49,28 +47,11 @@ gulp.task('buildBundleJs', async () => {
   }
 });
 
-gulp.task('buildBootstrapJs', async () => {
-  const {
-    dest,
-  } = bootstrapJs;
-
-  try {
-    const buildResults = await buildJs(bootstrapJs, webpackConfig).catch(error => console.log(error));
-    console.log(`${buildResults.stats.toString({ colors: true })}\n`);
-    console.log(`Output destination: ${path.resolve()}/${dest}`);
-    console.log(`Bootstrap JS Built! ${new Date().toLocaleTimeString()}`);
-    browserSync.reload('bootstrap.min.js');
-    console.log('\n');
-  } catch (err) {
-    console.log(new Error(`There was an error building BootstrapJs: ${err}`));
-  }
-});
-
 // Build Sass ----------------------------------
 gulp.task('buildBundleSass', async () => {
   const {
     dest,
-    filename,
+    outFile,
     watch,
   } = bundleSass;
 
@@ -86,31 +67,12 @@ gulp.task('buildBundleSass', async () => {
     await buildSass(bundleSass).catch(error => console.log(error));
     console.log(`Output destination: ${path.resolve()}/${dest}`);
     console.log(`Bundle CSS Built! ${new Date().toLocaleTimeString()}`);
-    console.log(chalk.green(path.join(__dirname, `${dest}/${filename}.min.css`)));
-    console.log(chalk.green(path.join(__dirname, `${dest}/${filename}.min.css.map`)));
-    browserSync.reload(`${filename}.min`);
+    console.log(chalk.green(path.join(__dirname, outFile)));
+    console.log(chalk.green(path.join(__dirname, `${outFile}.map`)));
+    browserSync.reload(outFile);
     console.log('\n');
   } else {
     console.log(`There are CSS errors. Stylesheet did NOT build! Please fix your CSS errors. ${new Date().toLocaleTimeString()}`);
-  }
-});
-
-gulp.task('buildBootstrapSass', async () => {
-  const {
-    dest,
-    filename,
-  } = bootstrapSass;
-
-  try {
-    await buildSass(bootstrapSass).catch(error => console.log(error));
-    console.log(`Output destination: ${path.resolve()}/${dest}`);
-    console.log(`Bootstrap CSS Built! ${new Date().toLocaleTimeString()}`);
-    console.log(chalk.green(path.join(__dirname, `${dest}/${filename}.min.css`)));
-    console.log(chalk.green(path.join(__dirname, `${dest}/${filename}.min.css.map`)));
-    browserSync.reload(`${filename}.min`);
-    console.log('\n');
-  } catch (err) {
-    console.log(new Error(`There was an error building BootstrapSass: ${err}`));
   }
 });
 
@@ -121,23 +83,8 @@ gulp.task('buildNunjucks', async () => {
     templates,
     dest,
   } = config.paths.nunjucks;
+
   await buildTemplates(source, templates, dest).catch(err => console.log(err));
-  // console.log(Array.isArray(buildResults.items), buildResults.items.map(item => (item.type === 'directory' ? Array.isArray(item.items) : null)));
-  // console.log(`{
-  //   type: ${buildResults.type},
-  //   name: ${buildResults.name},
-  //   items: ${buildResults.items.map(item => (`{
-  //     type: ${item.type},
-  //     name: ${item.name},
-  //     ${(item.items)
-  //     ? `item: ${item.items.map(item2 => (`{
-  //         type: ${item2.type},
-  //         name: ${item2.name},
-  //         contents: ${item2.contents},
-  //       }`))}`
-  //     : `contents: ${item.contents}`},
-  //     }`))},
-  // }`);
   console.log('HTML (Nunjucks) Templates Built!');
   browserSync.reload('*.html');
 });
@@ -146,13 +93,9 @@ gulp.task('watch', ['serve', 'watchNunjucks', 'watchBundleJs', 'watchBundleSass'
 
 gulp.task('watchBundleJs', () => gulp.watch(bundleJs.watch, ['buildBundleJs']).on('change', () => console.log('Bundle JS Changed!')));
 
-gulp.task('watchBootstrapJs', () => gulp.watch(bundleJs.watch, ['buildBootstrapJs']).on('change', () => console.log('Bootstrap JS Changed!')));
-
 gulp.task('watchTestJs', () => gulp.watch(config.paths.js.tests).on('change', () => console.log('Test JS Run!')));
 
 gulp.task('watchBundleSass', () => gulp.watch(bundleSass.watch, ['buildBundleSass']).on('change', () => console.log('Styles CSS Changed!')));
-
-gulp.task('watchBootstrapSass', () => gulp.watch(bundleSass.watch, ['buildBootstrapSass']).on('change', () => console.log('Bootstrap CSS Changed!')));
 
 gulp.task('watchNunjucks', () => gulp.watch(config.paths.nunjucks.watch, ['buildNunjucks']).on('change', () => console.log('HTML (Nunjucks) Templates Changed!')));
 
@@ -162,12 +105,7 @@ gulp.task('serve', () => browserSync.init({
   server: {
     baseDir: './www/',
   },
-  ui: {
-    port: 4002,
-    weinre: {
-      port: 9002,
-    },
-  },
+  ui: false,
 }));
 
 gulp.task('default', ['build', 'serve', 'watch'], () => console.log('Gulp started'));

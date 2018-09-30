@@ -1,7 +1,7 @@
 {
-  "name": "bbwovenwood",
-  "version": "2.4.0",
-  "description": "BB Woven Wood Shades Digital Sample Book App",
+  "name": "bbvertical",
+  "version": "2.1.0",
+  "description": "BB Vertical Blinds Digital Sample Book App",
   "main": "index.js",
   "scripts": {
     "start": "test gulp",
@@ -13,7 +13,8 @@
   },
   "keywords": [
     "Budget Blinds",
-    "Woven Wood",
+    "Cellular",
+    "Pleated",
     "Shades"
   ],
   "author": "Christopher Arritt",
@@ -60,14 +61,16 @@
   },
   "dependencies": {
     "cordova": "^8.0.0",
-    "cordova-android": "^7.0.0",
+    "cordova-android": "^7.1.1",
     "cordova-ios": "^4.5.5",
-    "cordova-plugin-whitelist": "1"
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "fastclick": "^1.0.6"
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-statusbar": {}
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-whitelist": {}
     },
     "platforms": [
       "android",

@@ -4,7 +4,7 @@ module.exports = {
     src: '',
   },
   output: {
-    filename: '',
+    filename: '.min.js',
   },
   module: {
     rules: [

@@ -3,6 +3,9 @@
   "globals": {
     "window": false,
     "document": false,
+    "CustomEvent": false,
+    "StatusBar": false,
+    "FastClick": false,
     "XMLHttpRequest": false,
     "fetch": false,
     "Headers": false,

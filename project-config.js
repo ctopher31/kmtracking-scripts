@@ -3,40 +3,31 @@ module.exports = {
   paths: {
     sass: {
       bundleSass: {
-        source: './src/css/styles.scss',
-        watch: ['./src/css/styles.scss', './src/css/sass/**/*.scss'],
-        dest: './www/css',
+        file: './src/scss/styles.scss',
+        includePaths: ['./base', './layout', './modules', './state', './theme'],
+        outputStyle: 'compressed',
+        sourceMap: true,
+        outFile: 'www/assets/css/styles.min.css',
+        watch: ['./src/scss/styles.scss', './src/scss/**/*.scss'],
+        dest: 'www/assets/css',
         filename: 'styles',
-      },
-      bootstrapSass: {
-        source: './src/css/bootstrap.scss',
-        watch: ['./src/css/bootstrap.scss', './src/css/bootstrap/**/*.scss'],
-        dest: './www/css',
-        filename: 'bootstrap',
       },
     },
     js: {
       bundleJs: {
         source: './src/js/app.js',
         watch: ['./src/js/app.js', './src/js/modules/**/*.js'],
-        dest: './www/js',
+        dest: 'www/assets/js',
         filename: 'app',
         tests: ['./tests/test.spec.js'],
-      },
-      bootstrapJs: {
-        source: './src/js/bootstrap.js',
-        watch: ['./src/js/bootstrap.js', './src/js/bootstrap/**/*.js'],
-        dest: './www/js',
-        filename: 'bootstrap',
-        tests: '',
       },
       tests: ['./tests/test.spec.js'],
     },
     nunjucks: {
-      source: '/src/pages',
+      source: './src/pages',
       templates: './src/templates',
       watch: ['./src/pages/**/*.+(html|njk)', './src/templates/**/*.+(html|njk)'],
-      dest: './www',
+      dest: 'www',
     },
   },
 };
