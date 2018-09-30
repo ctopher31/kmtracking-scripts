@@ -1,0 +1,4 @@
+# node_modules ignored by default
+
+# Ignore all test files
+**/__tests__/*.js
